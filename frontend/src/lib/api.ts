@@ -31,7 +31,7 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
 // API functions
 export const api = {
   // Health check
-  health: () => apiRequest<{ status: string; message: string; timestamp: string; version: string }>('/health'),
+  health: () => apiRequest<{ status: string; message: string; timestamp: string; version: string }>('/api/health'),
   
   // Dispositivos
   dispositivos: {

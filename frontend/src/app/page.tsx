@@ -36,26 +36,44 @@ export default function HomePage() {
       // Cargar dispositivos
       const dispositivosResponse = await api.dispositivos.getAll();
       const dispositivos = Array.isArray(dispositivosResponse) ? dispositivosResponse : [];
+      console.log('Dispositivos cargados:', dispositivos);
       
       // Cargar reservas
       const reservasResponse = await api.reservas.getAll();
       const reservas = Array.isArray(reservasResponse) ? reservasResponse : [];
+      console.log('Reservas cargadas:', reservas);
 
       // Calcular estadísticas
       const disponibles = dispositivos.filter((d: any) => d.estado === 'disponible').length;
+      const ocupados = dispositivos.filter((d: any) => d.estado === 'ocupado').length;
       const enMantenimiento = dispositivos.filter((d: any) => d.estado === 'mantenimiento').length;
       const reservasActivas = reservas.filter((r: any) => r.estado === 'activa').length;
+
+      console.log('Estadísticas calculadas:', {
+        total: dispositivos.length,
+        disponibles,
+        ocupados,
+        enMantenimiento,
+        reservasActivas
+      });
 
       setStats({
         totalDispositivos: dispositivos.length,
         disponibles,
         reservasActivas,
-        enMantenimiento,
+        enMantenimiento: enMantenimiento + ocupados, // Incluir ocupados en "En Uso"
       });
 
     } catch (error) {
       console.error('Error loading data:', error);
       setApiStatus('Error de conexión');
+      // Mantener estadísticas en 0 en caso de error
+      setStats({
+        totalDispositivos: 0,
+        disponibles: 0,
+        reservasActivas: 0,
+        enMantenimiento: 0,
+      });
     } finally {
       setLoading(false);
     }
@@ -180,11 +198,11 @@ export default function HomePage() {
 
           <div className="card">
             <div className="flex items-center">
-              <div className="p-3 bg-danger-100 rounded-lg">
-                <Settings className="h-6 w-6 text-danger-600" />
+              <div className="p-3 bg-blue-100 rounded-lg">
+                <Settings className="h-6 w-6 text-blue-600" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">En Mantenimiento</p>
+                <p className="text-sm font-medium text-gray-600">En Uso</p>
                 <p className="text-2xl font-bold text-gray-900">
                   {loading ? '--' : stats.enMantenimiento}
                 </p>
