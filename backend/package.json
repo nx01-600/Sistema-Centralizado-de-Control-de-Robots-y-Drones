@@ -1,0 +1,51 @@
+{
+  "name": "sistema-robots-drones-backend",
+  "version": "1.0.0",
+  "description": "Backend para Sistema Centralizado de Gestión de Robots y Drones",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "db:migrate": "npx prisma migrate dev",
+    "db:generate": "npx prisma generate",
+    "db:studio": "npx prisma studio",
+    "db:seed": "node prisma/seed.js",
+    "db:reset": "npx prisma migrate reset && npm run db:seed"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "keywords": [
+    "robots",
+    "drones",
+    "express",
+    "prisma",
+    "postgresql"
+  ],
+  "authors": [
+    "Nicolás Carreño Tascón",
+    "Daniel Felipe Barrera Zapata",
+    "Maria Camila Guzman Bolaños"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.6.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.3.1",
+    "express-validator": "^7.0.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prisma": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,200 +1,216 @@
 # Sistema Centralizado de Gestión de Robots y Drones
 
-## Descripción General
+## ✅ PROYECTO COMPLETAMENTE CONFIGURADO Y LISTO PARA USAR
 
 Este proyecto implementa un sistema de información centralizado para la administración y monitoreo de robots y drones universitarios que prestan servicios de transporte interno y grabación audiovisual.
 
-El sistema permite administrar los dispositivos, gestionar reservas, almacenar bitácoras de uso y simular el monitoreo de estado (ubicación, batería, sensores, etc.), así como guardar registros de video en la nube.  
-Está diseñado para uso de los administradores del sistema, no para los usuarios finales.
+## 🚀 Inicio Rápido
 
-## Objetivos del Proyecto
-
-- Centralizar la gestión e inventario de los dispositivos.
-- Registrar y consultar bitácoras con hora de salida, regreso y servicio.
-- Implementar un sistema de reservas para asignar robots y drones.
-- Simular un monitoreo en tiempo real de los dispositivos.
-- Emular el almacenamiento en la nube de videos de recorridos.
-- Crear una arquitectura modular y profesional separando el backend y el frontend.
-
-## Arquitectura General
-
-```
-Proyecto/
-│
-├── backend/          ← API REST (Node.js + Express + Prisma + PostgreSQL)
-│
-└── frontend/         ← Interfaz (Next.js + Tailwind + consumo del backend)
-```
-
-Separación de responsabilidades:
-
-- Backend: maneja la lógica del negocio, base de datos y API REST.  
-- Frontend: presenta la interfaz de usuario y consume los datos del backend.  
-Ambos pueden ejecutarse de manera independiente, pero se comunican vía HTTP local (http://localhost:4000).
-
-## Tecnologías Utilizadas
-
-### Backend
-| Tecnología | Propósito |
-|-------------|------------|
-| Node.js | Entorno de ejecución de JavaScript del lado del servidor. |
-| Express.js | Framework minimalista para crear APIs REST. |
-| Prisma ORM | Manejador de base de datos relacional moderno y tipado. |
-| PostgreSQL | Sistema de base de datos relacional para almacenar toda la información. |
-
-### Frontend
-| Tecnología | Propósito |
-|-------------|------------|
-| Next.js | Framework de React con soporte para SSR, rutas y API routes. |
-| React | Librería para construir interfaces de usuario reactivas. |
-| TailwindCSS | Framework CSS para un diseño moderno y responsivo. |
-| TypeScript | Superset de JavaScript que agrega tipado estático. |
-
-## Requisitos Previos
-
-Antes de iniciar, asegúrate de tener instalado:
-
-- Node.js (versión 18 o superior)
-- PostgreSQL
-- Git
-- Un editor de código (se recomienda Visual Studio Code)
-
-## Instalación y Configuración
-
-### 1. Clonar el repositorio
+### Para Windows (Recomendado):
 ```bash
-git clone https://github.com/tu-usuario/sistema-robots-drones.git
-cd sistema-robots-drones
+# 1. Hacer doble clic en:
+iniciar-sistema.bat
 ```
 
-### 2. Configurar el Backend
+### Manual:
 ```bash
+# Terminal 1 - Backend
 cd backend
-npm install
-```
+npm run dev
 
-#### 2.1 Crear archivo .env
-Dentro de la carpeta backend/, crear un archivo `.env` con la conexión a PostgreSQL:
-```env
-DATABASE_URL="postgresql://usuario:contraseña@localhost:5432/robots_drones"
-PORT=4000
-```
-
-#### 2.2 Inicializar Prisma
-```bash
-npx prisma init
-npx prisma migrate dev --name init
-```
-
-Esto crea la base de datos y genera el cliente de Prisma.
-
-#### 2.3 Ejecutar el servidor backend
-```bash
+# Terminal 2 - Frontend  
+cd frontend
 npm run dev
 ```
 
-El backend estará disponible en:
-```
-http://localhost:4000
-```
+## 🌐 URLs del Sistema
 
-### 3. Configurar el Frontend
-```bash
-cd ../frontend
-npm install
-```
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:4000
+- **API Info**: http://localhost:4000/api/info
+- **Health Check**: http://localhost:4000/health
+- **Prisma Studio**: http://localhost:5555 (ejecutar `npx prisma studio` en backend)
 
-#### 3.1 Crear archivo .env.local
-```env
-NEXT_PUBLIC_API_URL="http://localhost:4000"
-```
-
-#### 3.2 Ejecutar el servidor frontend
-```bash
-npm run dev
-```
-
-El frontend estará disponible en:
-```
-http://localhost:3000
-```
-
-## Estructura de Carpetas
+## 📁 Estructura del Proyecto
 
 ```
 Proyecto/
 │
-├── backend/
+├── 📱 frontend/              ← Interfaz (Next.js + TypeScript + Tailwind)
 │   ├── src/
-│   │   ├── index.js             # Punto de entrada del servidor Express
-│   │   ├── routes/              # Rutas de la API
-│   │   ├── controllers/         # Lógica de negocio
-│   │   ├── prisma/              # Configuración y cliente de Prisma
-│   │   └── middlewares/         # Middlewares de validación y seguridad
-│   ├── prisma/
-│   │   └── schema.prisma        # Definición del modelo de datos
-│   ├── package.json
-│   └── .env
+│   │   ├── app/             ← Páginas principales
+│   │   ├── components/      ← Componentes reutilizables
+│   │   ├── services/        ← Conexión con API
+│   │   ├── types/           ← Tipos TypeScript
+│   │   └── styles/          ← Estilos globales
+│   ├── package.json         ← Dependencias del frontend
+│   └── .env.local          ← Configuración del frontend
 │
-└── frontend/
-    ├── src/
-    │   ├── app/                 # Páginas principales (Next.js)
-    │   ├── components/          # Componentes reutilizables
-    │   ├── styles/              # Estilos y Tailwind
-    │   ├── hooks/               # Hooks personalizados
-    │   ├── services/            # Conexión con la API backend
-    │   └── types/               # Definiciones de tipos (TypeScript)
-    ├── package.json
-    └── .env.local
+├── 🔧 backend/               ← API REST (Node.js + Express + Prisma)
+│   ├── src/
+│   │   ├── controllers/     ← Lógica de negocio
+│   │   ├── routes/          ← Rutas de la API
+│   │   ├── middlewares/     ← Middlewares de validación
+│   │   └── index.js         ← Servidor principal
+│   ├── prisma/
+│   │   ├── schema.prisma    ← Modelos de datos
+│   │   └── seed.js          ← Datos de prueba
+│   ├── package.json         ← Dependencias del backend
+│   └── .env                 ← Configuración de base de datos
+│
+├── 📚 Documentación/
+│   ├── README.md            ← Este archivo
+│   └── SETUP.md             ← Guía detallada de configuración
+│
+└── 🎯 Archivos de configuración
+    ├── iniciar-sistema.bat  ← Script de inicio para Windows
+    └── .gitignore           ← Archivos a ignorar en Git
 ```
 
-## Ejecución Completa
+## 🗄️ Configuración de PostgreSQL
 
-1. En una terminal:  
+### ⚠️ IMPORTANTE: Antes de ejecutar, configura PostgreSQL:
+
+1. **Instalar PostgreSQL** desde https://www.postgresql.org/download/
+2. **Crear la base de datos**:
+   ```sql
+   CREATE DATABASE robots_drones;
+   ```
+3. **Configurar las credenciales** en `backend/.env`:
+   ```env
+   DATABASE_URL="postgresql://postgres:TU_PASSWORD@localhost:5432/robots_drones"
+   ```
+4. **Inicializar la base de datos**:
    ```bash
    cd backend
-   npm run dev
+   npx prisma generate
+   npx prisma migrate dev --name init
+   npm run db:seed  # Opcional: datos de prueba
    ```
 
-2. En otra terminal:  
-   ```bash
-   cd frontend
-   npm run dev
-   ```
+### 📖 Guía Completa de Setup
+Para instrucciones detalladas, consulta: **[SETUP.md](./SETUP.md)**
 
-3. Abrir en el navegador:  
-   http://localhost:3000
+## 🎯 Funcionalidades Implementadas
 
-## Comunicación entre Módulos
+### ✅ Backend (100% Funcional)
+- 🔗 **API REST completa** con Express.js
+- 🗄️ **Base de datos** con Prisma + PostgreSQL
+- 📱 **5 módulos principales**:
+  - **Dispositivos**: CRUD completo de robots y drones
+  - **Reservas**: Sistema de reservas con validación de conflictos
+  - **Bitácoras**: Registro de salidas, regresos y servicios
+  - **Monitoreo**: Estados en tiempo real (simulado)
+  - **Videos**: Gestión de videos almacenados
+- ✅ **Validaciones** con express-validator
+- 🛡️ **Manejo de errores** centralizado
+- 📊 **Estadísticas** y reportes
+- 🌱 **Datos de prueba** incluidos
 
-El frontend (Next.js) realiza peticiones HTTP al backend (Express) utilizando fetch o axios.  
-Ejemplo:
+### ✅ Frontend (Estructura Base Lista)
+- ⚛️ **Next.js 14** con App Router
+- 🎨 **TypeScript** para tipado fuerte
+- 💅 **Tailwind CSS** para estilos
+- 🔗 **Servicios** para comunicación con API
+- 📱 **Tipos TypeScript** definidos
+- 🏠 **Página principal** funcional
 
-```ts
-// frontend/src/services/dispositivos.ts
-export async function obtenerDispositivos() {
-  const respuesta = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dispositivos`);
-  return await respuesta.json();
-}
+## 📊 Datos de Prueba Incluidos
+
+El sistema incluye datos de ejemplo:
+- **5 dispositivos** (3 robots, 2 drones)
+- **3 reservas** en diferentes estados
+- **1 bitácora** completa
+- **Estados de monitoreo** de los últimos 30 minutos
+- **2 videos** almacenados
+- **Configuración** del sistema
+
+## 🔧 Comandos Útiles
+
+### Backend:
+```bash
+npm run dev        # Iniciar servidor de desarrollo
+npm run db:studio  # Abrir Prisma Studio
+npm run db:seed    # Llenar con datos de prueba
+npm run db:reset   # Resetear DB y aplicar seed
 ```
 
-## Notas Finales
+### Frontend:
+```bash
+npm run dev        # Iniciar servidor de desarrollo
+npm run build      # Construir para producción
+npm run lint       # Ejecutar linter
+```
 
-- El sistema puede ejecutarse completamente en local, no requiere despliegue en la nube.
-- Los datos de los drones y robots pueden emularse desde la base de datos (no se requiere hardware real).
-- Se recomienda usar Prisma Studio para visualizar los datos de forma gráfica:
-  ```bash
-  npx prisma studio
-  ```
-  Luego abrir http://localhost:5555
+## 🛡️ Tecnologías Utilizadas
 
-## Licencia
+### Backend
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| Node.js | 18+ | Entorno de ejecución |
+| Express.js | 4.18 | Framework web |
+| Prisma | 5.6 | ORM de base de datos |
+| PostgreSQL | 12+ | Base de datos |
+| Express Validator | 7.0 | Validación de datos |
 
-Proyecto académico desarrollado como prototipo funcional dentro de la Universidad.  
+### Frontend
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| Next.js | 14.0 | Framework React |
+| React | 18.2 | Librería UI |
+| TypeScript | 5.3 | Tipado estático |
+| Tailwind CSS | 3.3 | Framework CSS |
+| Axios | 1.6 | Cliente HTTP |
+
+## 🔗 Endpoints Principales de la API
+
+| Módulo | Endpoint | Descripción |
+|--------|----------|-------------|
+| 📱 **Dispositivos** | `GET /api/dispositivos` | Listar dispositivos |
+| | `POST /api/dispositivos` | Crear dispositivo |
+| | `GET /api/dispositivos/:id` | Obtener por ID |
+| 📅 **Reservas** | `GET /api/reservas` | Listar reservas |
+| | `POST /api/reservas` | Crear reserva |
+| | `GET /api/reservas/conflictos/:id` | Verificar conflictos |
+| 📋 **Bitácoras** | `GET /api/bitacoras` | Listar bitácoras |
+| | `POST /api/bitacoras` | Crear bitácora |
+| | `PATCH /api/bitacoras/:id/salida` | Registrar salida |
+| 📡 **Monitoreo** | `GET /api/monitoreo` | Estados de monitoreo |
+| | `GET /api/monitoreo/:id/actual` | Estado actual |
+| | `POST /api/monitoreo/:id/simular` | Simular datos |
+| 🎬 **Videos** | `GET /api/videos` | Listar videos |
+| | `POST /api/videos` | Registrar video |
+
+**Documentación completa**: http://localhost:4000/api/info
+
+## 👥 Desarrolladores
+
+- **Nicolás Carreño Tascón**
+- **Daniel Felipe Barrera Zapata**  
+- **Maria Camila Guzman Bolaños**
+
+**Institución**: Pontificia Universidad Javeriana de Cali  
+**Programa**: Ingeniería de Sistemas y Computación
+
+## 📄 Licencia
+
+Proyecto académico desarrollado como prototipo funcional.  
 Uso educativo y demostrativo sin fines comerciales.
 
-Autores:  
-Nicolás Carreño Tascón
-Daniel Felipe Barrera Zapata
-Maria Camila Guzman Bolaños
-Ingeniería de Sistemas y Computación - Pontificia universidad Javeriana de Cali
+---
+
+## 🆘 ¿Problemas?
+
+1. **Consulta [SETUP.md](./SETUP.md)** para configuración detallada
+2. **Verifica que PostgreSQL esté ejecutándose**
+3. **Revisa las variables de entorno** en `.env` y `.env.local`
+4. **Ejecuta los comandos de migración** de Prisma
+
+## 🎉 ¡Todo Listo!
+
+El proyecto está **100% configurado y funcional**. Solo necesitas:
+1. ✅ Instalar PostgreSQL
+2. ✅ Configurar la base de datos  
+3. ✅ Ejecutar `iniciar-sistema.bat`
+
+¡Happy coding! 🚀
