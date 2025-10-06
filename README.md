@@ -193,6 +193,8 @@ export async function obtenerDispositivos() {
 Proyecto académico desarrollado como prototipo funcional dentro de la Universidad.  
 Uso educativo y demostrativo sin fines comerciales.
 
-Autor:  
-Nicolás Carreño Tascón  
-Ingeniería de Sistemas y Computación
+Autores:  
+Nicolás Carreño Tascón
+Daniel Felipe Barrera Zapata
+Maria Camila Guzman Bolaños
+Ingeniería de Sistemas y Computación - Pontificia universidad Javeriana de Cali
