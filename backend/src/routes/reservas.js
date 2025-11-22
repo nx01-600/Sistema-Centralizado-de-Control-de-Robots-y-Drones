@@ -11,28 +11,28 @@ const createReservaValidation = [
     .notEmpty()
     .withMessage('El ID del dispositivo es obligatorio'),
   
-  body('fechaInicio')
+  body('fechaSalida')
     .isISO8601()
-    .withMessage('La fecha de inicio debe ser válida (ISO 8601)')
+    .withMessage('La fecha de salida debe ser válida (ISO 8601)')
     .custom(value => {
       if (new Date(value) <= new Date()) {
-        throw new Error('La fecha de inicio debe ser futura');
+        throw new Error('La fecha de salida debe ser futura');
       }
       return true;
     }),
   
-  body('fechaFin')
+  body('fechaRegreso')
     .isISO8601()
-    .withMessage('La fecha de fin debe ser válida (ISO 8601)')
+    .withMessage('La fecha de regreso debe ser válida (ISO 8601)')
     .custom((value, { req }) => {
-      if (new Date(value) <= new Date(req.body.fechaInicio)) {
-        throw new Error('La fecha de fin debe ser posterior a la fecha de inicio');
+      if (new Date(value) <= new Date(req.body.fechaSalida)) {
+        throw new Error('La fecha de regreso debe ser posterior a la fecha de salida');
       }
       return true;
     }),
   
   body('tipoServicio')
-    .isIn(['TRANSPORTE_INTERNO', 'GRABACION_AUDIOVISUAL', 'MONITOREO', 'MANTENIMIENTO'])
+    .isIn(['TRANSPORTE_INTERNO', 'GRABACION_EVENTO', 'MONITOREO', 'ENTREGA'])
     .withMessage('Tipo de servicio inválido'),
   
   body('solicitadoPor')
@@ -57,7 +57,6 @@ const createReservaValidation = [
 
 // GET /api/reservas - Obtener todas las reservas
 router.get('/',
-  query('estado').optional().isIn(['PENDIENTE', 'ACTIVA', 'COMPLETADA', 'CANCELADA']).withMessage('Estado inválido'),
   query('dispositivoId').optional().notEmpty().withMessage('ID de dispositivo inválido'),
   query('page').optional().isInt({ min: 1 }).withMessage('Página inválida'),
   query('limit').optional().isInt({ min: 1, max: 100 }).withMessage('Límite inválido'),
@@ -82,7 +81,6 @@ router.post('/',
 // PUT /api/reservas/:id - Actualizar reserva
 router.put('/:id',
   param('id').notEmpty().withMessage('ID de reserva requerido'),
-  body('estado').optional().isIn(['PENDIENTE', 'ACTIVA', 'COMPLETADA', 'CANCELADA']).withMessage('Estado inválido'),
   validateRequest,
   reservasController.updateReserva
 );
@@ -92,14 +90,6 @@ router.delete('/:id',
   param('id').notEmpty().withMessage('ID de reserva requerido'),
   validateRequest,
   reservasController.cancelReserva
-);
-
-// PATCH /api/reservas/:id/estado - Cambiar estado de reserva
-router.patch('/:id/estado',
-  param('id').notEmpty().withMessage('ID de reserva requerido'),
-  body('estado').isIn(['PENDIENTE', 'ACTIVA', 'COMPLETADA', 'CANCELADA']).withMessage('Estado inválido'),
-  validateRequest,
-  reservasController.changeEstado
 );
 
 // GET /api/reservas/dispositivo/:dispositivoId - Reservas por dispositivo
@@ -112,15 +102,6 @@ router.get('/dispositivo/:dispositivoId',
 // GET /api/reservas/estadisticas/resumen - Estadísticas de reservas
 router.get('/estadisticas/resumen',
   reservasController.getReservasStats
-);
-
-// GET /api/reservas/conflictos/:dispositivoId - Verificar conflictos de horario
-router.get('/conflictos/:dispositivoId',
-  param('dispositivoId').notEmpty().withMessage('ID de dispositivo requerido'),
-  query('fechaInicio').isISO8601().withMessage('Fecha de inicio inválida'),
-  query('fechaFin').isISO8601().withMessage('Fecha de fin inválida'),
-  validateRequest,
-  reservasController.checkConflictos
 );
 
 module.exports = router;

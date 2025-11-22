@@ -17,33 +17,18 @@ const createDeviceValidation = [
     .isIn(['ROBOT', 'DRONE'])
     .withMessage('El tipo debe ser ROBOT o DRONE'),
   
-  body('modelo')
+  body('identificador')
     .notEmpty()
-    .withMessage('El modelo es obligatorio'),
+    .withMessage('El identificador es obligatorio'),
   
-  body('numeroSerie')
+  body('ubicacion')
     .notEmpty()
-    .withMessage('El número de serie es obligatorio'),
+    .withMessage('La ubicación es obligatoria'),
   
-  body('pesoMaximoCarga')
+  body('estado')
     .optional()
-    .isFloat({ min: 0 })
-    .withMessage('El peso máximo debe ser un número positivo'),
-  
-  body('autonomiaMaxima')
-    .optional()
-    .isInt({ min: 1 })
-    .withMessage('La autonomía máxima debe ser un número entero positivo'),
-  
-  body('velocidadMaxima')
-    .optional()
-    .isFloat({ min: 0 })
-    .withMessage('La velocidad máxima debe ser un número positivo'),
-  
-  body('alturaMaxima')
-    .optional()
-    .isFloat({ min: 0 })
-    .withMessage('La altura máxima debe ser un número positivo')
+    .isIn(['DISPONIBLE', 'EN_USO', 'EN_MANTENIMIENTO', 'EN_CARGA'])
+    .withMessage('Estado inválido')
 ];
 
 // Validaciones para actualizar dispositivo

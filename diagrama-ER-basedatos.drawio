@@ -1,0 +1,305 @@
+<mxfile host="app.diagrams.net" modified="2025-11-22T00:00:00.000Z" agent="DrawIO" version="22.1.11">
+  <diagram name="Diagrama ER - Base de Datos" id="er-diagram">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        
+        <!-- Título -->
+        <mxCell id="title" value="Diagrama Entidad-Relación: Sistema de Gestión de Robots y Drones" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="1000" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- Subtítulo -->
+        <mxCell id="subtitle" value="PostgreSQL con Prisma ORM | 3 Tablas | 3 Enums | Relaciones 1:N con CASCADE DELETE" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="200" y="60" width="1000" height="30" as="geometry"/>
+        </mxCell>
+        
+        <!-- ========== TABLA DISPOSITIVOS ========== -->
+        <mxCell id="dispositivos-table" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="360" height="460" as="geometry"/>
+        </mxCell>
+        
+        <!-- Header Dispositivos -->
+        <mxCell id="dispositivos-header" value="&lt;b&gt;DISPOSITIVOS&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1565C0;strokeColor=#1565C0;fontColor=#FFFFFF;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="360" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- Campos Dispositivos -->
+        <mxCell id="disp-id" value="🔑 id: UUID [PK]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1565C0;align=left;fontSize=12;spacingLeft=10;fontFamily=Consolas;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="80" y="180" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-nombre" value="nombre: String" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="210" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-tipo" value="tipo: TipoDispositivo [ENUM] ⚡" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="240" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-identificador" value="identificador: String [UNIQUE]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="270" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-estado" value="estado: EstadoDispositivo [ENUM] ⚡" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="300" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-ubicacion" value="ubicacion: String" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="330" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-descripcion" value="descripcion: String [OPTIONAL]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="360" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-modelo" value="modelo: String [OPTIONAL]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="390" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-imagen" value="imagenUrl: String [OPTIONAL]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="420" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-activo" value="activo: Boolean [DEFAULT: true]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="450" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-created" value="⏰ createdAt: DateTime [DEFAULT: now()]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="480" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-updated" value="⏰ updatedAt: DateTime [@updatedAt]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="510" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="disp-relations" value="🔗 reservas: Reserva[]&lt;br&gt;🔗 metricas: Metrica[]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#1565C0;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;verticalAlign=top;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="80" y="540" width="360" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- ========== TABLA RESERVAS ========== -->
+        <mxCell id="reservas-table" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="520" y="140" width="360" height="460" as="geometry"/>
+        </mxCell>
+        
+        <!-- Header Reservas -->
+        <mxCell id="reservas-header" value="&lt;b&gt;RESERVAS&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E65100;strokeColor=#E65100;fontColor=#FFFFFF;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="520" y="140" width="360" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- Campos Reservas -->
+        <mxCell id="res-id" value="🔑 id: UUID [PK]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFE0B2;strokeColor=#E65100;align=left;fontSize=12;spacingLeft=10;fontFamily=Consolas;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="520" y="180" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-dispositivo-id" value="🔗 dispositivoId: UUID [FK] → dispositivos.id" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="520" y="210" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-usuario" value="usuario: String" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="240" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-email" value="email: String" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="270" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-fecha-inicio" value="fechaInicio: DateTime" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="300" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-fecha-fin" value="fechaFin: DateTime" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="330" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-proposito" value="proposito: String" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="360" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-proyecto" value="proyecto: String [OPTIONAL]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="390" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-observaciones" value="observaciones: String [OPTIONAL]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="420" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-activo" value="activo: Boolean [DEFAULT: true]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="450" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-created" value="⏰ createdAt: DateTime [DEFAULT: now()]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="480" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-updated" value="⏰ updatedAt: DateTime [@updatedAt]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="520" y="510" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="res-relations" value="🔗 dispositivo: Dispositivo @relation&lt;br&gt;   [onDelete: Cascade]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#E65100;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;verticalAlign=top;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="520" y="540" width="360" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- ========== TABLA METRICAS ========== -->
+        <mxCell id="metricas-table" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#6A1B9A;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="960" y="140" width="360" height="460" as="geometry"/>
+        </mxCell>
+        
+        <!-- Header Metricas -->
+        <mxCell id="metricas-header" value="&lt;b&gt;METRICAS&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6A1B9A;strokeColor=#6A1B9A;fontColor=#FFFFFF;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="960" y="140" width="360" height="40" as="geometry"/>
+        </mxCell>
+        
+        <!-- Campos Metricas -->
+        <mxCell id="met-id" value="🔑 id: UUID [PK]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#6A1B9A;align=left;fontSize=12;spacingLeft=10;fontFamily=Consolas;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="960" y="180" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-dispositivo-id" value="🔗 dispositivoId: UUID [FK] → dispositivos.id" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="960" y="210" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-fecha" value="fecha: DateTime" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="240" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-tipo-servicio" value="tipoServicio: TipoServicio [ENUM] ⚡" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="270" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-duracion" value="duracion: Int [minutos]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="300" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-usuario" value="usuario: String" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="330" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-resultado" value="resultado: String [OPTIONAL]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="360" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-observaciones" value="observaciones: String [OPTIONAL]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="390" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-activo" value="activo: Boolean [DEFAULT: true]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="420" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-created" value="⏰ createdAt: DateTime [DEFAULT: now()]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="450" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-updated" value="⏰ updatedAt: DateTime [@updatedAt]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="960" y="480" width="360" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="met-relations" value="🔗 dispositivo: Dispositivo @relation&lt;br&gt;   [onDelete: Cascade]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#6A1B9A;align=left;fontSize=11;spacingLeft=10;fontFamily=Consolas;verticalAlign=top;spacingTop=5;" vertex="1" parent="1">
+          <mxGeometry x="960" y="510" width="360" height="60" as="geometry"/>
+        </mxCell>
+        
+        <!-- ========== RELACIONES ========== -->
+        
+        <!-- Relación Dispositivos → Reservas (1:N) -->
+        <mxCell id="rel-disp-res" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#E65100;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="disp-id" target="res-dispositivo-id">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="rel-disp-res-label" value="1 : N&lt;br&gt;[CASCADE DELETE]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=1;fontColor=#E65100;backgroundColor=#FFFFFF;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="rel-disp-res">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Relación Dispositivos → Métricas (1:N) -->
+        <mxCell id="rel-disp-met" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=3;strokeColor=#6A1B9A;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="disp-id" target="met-dispositivo-id">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="470" y="195"/>
+              <mxPoint x="470" y="80"/>
+              <mxPoint x="930" y="80"/>
+              <mxPoint x="930" y="225"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="rel-disp-met-label" value="1 : N&lt;br&gt;[CASCADE DELETE]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=1;fontColor=#6A1B9A;backgroundColor=#FFFFFF;labelBackgroundColor=#FFFFFF;" vertex="1" connectable="0" parent="rel-disp-met">
+          <mxGeometry x="-0.1" y="1" relative="1" as="geometry">
+            <mxPoint x="180" y="-1" as="offset"/>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- ========== ENUMS ========== -->
+        
+        <!-- TipoDispositivo -->
+        <mxCell id="enum-tipo-disp" value="&lt;b&gt;ENUM: TipoDispositivo&lt;/b&gt;&lt;br&gt;• ROBOT&lt;br&gt;• DRONE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEB3B;strokeColor=#F57F17;strokeWidth=2;fontSize=11;align=left;spacingLeft=10;verticalAlign=top;spacingTop=5;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="650" width="200" height="80" as="geometry"/>
+        </mxCell>
+        
+        <!-- EstadoDispositivo -->
+        <mxCell id="enum-estado-disp" value="&lt;b&gt;ENUM: EstadoDispositivo&lt;/b&gt;&lt;br&gt;• DISPONIBLE&lt;br&gt;• EN_USO&lt;br&gt;• MANTENIMIENTO&lt;br&gt;• FUERA_SERVICIO" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEB3B;strokeColor=#F57F17;strokeWidth=2;fontSize=11;align=left;spacingLeft=10;verticalAlign=top;spacingTop=5;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="300" y="650" width="240" height="120" as="geometry"/>
+        </mxCell>
+        
+        <!-- TipoServicio -->
+        <mxCell id="enum-tipo-servicio" value="&lt;b&gt;ENUM: TipoServicio&lt;/b&gt;&lt;br&gt;• INVESTIGACION&lt;br&gt;• DOCENCIA&lt;br&gt;• EXTENSION&lt;br&gt;• MANTENIMIENTO&lt;br&gt;• PRUEBAS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEB3B;strokeColor=#F57F17;strokeWidth=2;fontSize=11;align=left;spacingLeft=10;verticalAlign=top;spacingTop=5;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="560" y="650" width="240" height="140" as="geometry"/>
+        </mxCell>
+        
+        <!-- Flechas de Enums -->
+        <mxCell id="arrow-enum-tipo" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#F57F17;dashed=1;" edge="1" parent="1" source="disp-tipo" target="enum-tipo-disp">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="arrow-enum-estado" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#F57F17;dashed=1;" edge="1" parent="1" source="disp-estado" target="enum-estado-disp">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="arrow-enum-servicio" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#F57F17;dashed=1;" edge="1" parent="1" source="met-tipo-servicio" target="enum-tipo-servicio">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        
+        <!-- ========== ÍNDICES Y CONSTRAINTS ========== -->
+        <mxCell id="indices-box" value="&lt;b&gt;ÍNDICES Y CONSTRAINTS&lt;/b&gt;&lt;br&gt;&lt;br&gt;✓ dispositivos_identificador_key [UNIQUE INDEX]&lt;br&gt;   • Index único en dispositivos.identificador&lt;br&gt;&lt;br&gt;✓ reservas_dispositivoId_fkey [FOREIGN KEY]&lt;br&gt;   • FK desde reservas.dispositivoId → dispositivos.id&lt;br&gt;   • ON DELETE CASCADE&lt;br&gt;&lt;br&gt;✓ metricas_dispositivoId_fkey [FOREIGN KEY]&lt;br&gt;   • FK desde metricas.dispositivoId → dispositivos.id&lt;br&gt;   • ON DELETE CASCADE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5E9;strokeColor=#2E7D32;strokeWidth=2;fontSize=11;align=left;spacingLeft=15;verticalAlign=top;spacingTop=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="840" y="650" width="480" height="200" as="geometry"/>
+        </mxCell>
+        
+        <!-- ========== NOTAS ADICIONALES ========== -->
+        <mxCell id="notas-box" value="&lt;b&gt;📝 NOTAS IMPORTANTES&lt;/b&gt;&lt;br&gt;&lt;br&gt;• Normalización: 3FN (Tercera Forma Normal)&lt;br&gt;• UUIDs como Primary Keys para mejor distribución&lt;br&gt;• Timestamps automáticos: createdAt + updatedAt&lt;br&gt;• Soft Delete: Campo 'activo' en todas las tablas&lt;br&gt;• Cascade Delete: Eliminar dispositivo elimina sus reservas/métricas&lt;br&gt;• Type-Safety: Prisma genera tipos TypeScript automáticamente&lt;br&gt;• Enums: Garantizan valores válidos en BD y código&lt;br&gt;• Relaciones bidireccionales: Navegación desde ambas tablas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;strokeWidth=2;fontSize=11;align=left;spacingLeft=15;verticalAlign=top;spacingTop=10;fontFamily=Consolas;" vertex="1" parent="1">
+          <mxGeometry x="80" y="800" width="720" height="180" as="geometry"/>
+        </mxCell>
+        
+        <!-- ========== LEYENDA ========== -->
+        <mxCell id="leyenda-box" value="&lt;b&gt;🎨 LEYENDA&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECEFF1;strokeColor=#37474F;strokeWidth=2;fontSize=12;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="840" y="870" width="480" height="40" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leyenda-pk" value="🔑 Primary Key" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#BBDEFB;strokeColor=#1565C0;fontSize=10;align=left;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="850" y="920" width="140" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leyenda-fk" value="🔗 Foreign Key" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=10;align=left;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="920" width="140" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leyenda-enum" value="⚡ Enum Type" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFEB3B;strokeColor=#F57F17;fontSize=10;align=left;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="1150" y="920" width="140" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leyenda-timestamp" value="⏰ Timestamp" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFF9C4;strokeColor=#F57F17;fontSize=10;align=left;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="850" y="960" width="140" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leyenda-relation" value="🔗 Relation Array" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#2E7D32;fontSize=10;align=left;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="960" width="140" height="30" as="geometry"/>
+        </mxCell>
+        
+        <mxCell id="leyenda-cascade" value="CASCADE DELETE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFCDD2;strokeColor=#C62828;fontSize=10;align=left;spacingLeft=5;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1150" y="960" width="140" height="30" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

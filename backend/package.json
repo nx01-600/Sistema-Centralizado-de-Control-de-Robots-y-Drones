@@ -2,10 +2,10 @@
   "name": "sistema-robots-drones-backend",
   "version": "1.0.0",
   "description": "Backend para Sistema Centralizado de Gestión de Robots y Drones",
-  "main": "src/index.js",
+  "main": "src/index_demo.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
+    "dev": "nodemon src/index_demo.js",
+    "start": "node src/index_demo.js",
     "db:migrate": "npx prisma migrate dev",
     "db:generate": "npx prisma generate",
     "db:studio": "npx prisma studio",

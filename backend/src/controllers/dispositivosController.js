@@ -26,8 +26,7 @@ class DispositivosController {
             _count: {
               select: {
                 reservas: true,
-                bitacoras: true,
-                videosAlmacenados: true
+                metricas: true
               }
             }
           },
@@ -60,20 +59,16 @@ class DispositivosController {
         include: {
           reservas: {
             orderBy: { createdAt: 'desc' },
-            take: 5,
-            include: {
-              bitacora: true
-            }
+            take: 5
           },
-          estadosMonitoreo: {
-            orderBy: { timestamp: 'desc' },
-            take: 1
+          metricas: {
+            orderBy: { fecha: 'desc' },
+            take: 5
           },
           _count: {
             select: {
               reservas: true,
-              bitacoras: true,
-              videosAlmacenados: true
+              metricas: true
             }
           }
         }
@@ -158,18 +153,17 @@ class DispositivosController {
     try {
       const { id } = req.params;
       
-      // Verificar si tiene reservas activas
-      const reservasActivas = await prisma.reserva.count({
+      // Verificar si tiene reservas
+      const reservasCount = await prisma.reserva.count({
         where: {
-          dispositivoId: id,
-          estado: { in: ['PENDIENTE', 'ACTIVA'] }
+          dispositivoId: id
         }
       });
       
-      if (reservasActivas > 0) {
+      if (reservasCount > 0) {
         return res.status(400).json({
           error: 'No se puede eliminar',
-          message: 'El dispositivo tiene reservas activas. Cancele las reservas primero.'
+          message: 'El dispositivo tiene reservas registradas.'
         });
       }
       
@@ -199,13 +193,12 @@ class DispositivosController {
           nivelBateria: true,
           reservas: {
             where: {
-              estado: { in: ['PENDIENTE', 'ACTIVA'] }
+              fechaRegreso: { gte: new Date() }
             },
             select: {
               id: true,
-              fechaInicio: true,
-              fechaFin: true,
-              estado: true
+              fechaSalida: true,
+              fechaRegreso: true
             }
           }
         }
@@ -269,7 +262,7 @@ class DispositivosController {
       
       const dispositivo = await prisma.dispositivo.update({
         where: { id },
-        data: { ubicacionActual: ubicacion }
+        data: { ubicacion }
       });
       
       res.json({
@@ -277,7 +270,7 @@ class DispositivosController {
         dispositivo: {
           id: dispositivo.id,
           nombre: dispositivo.nombre,
-          ubicacionActual: dispositivo.ubicacionActual
+          ubicacion: dispositivo.ubicacion
         }
       });
     } catch (error) {
@@ -294,8 +287,8 @@ class DispositivosController {
         prisma.dispositivo.count({ where: { tipo: 'DRONE' } }),
         prisma.dispositivo.count({ where: { estado: 'DISPONIBLE' } }),
         prisma.dispositivo.count({ where: { estado: 'EN_USO' } }),
-        prisma.dispositivo.count({ where: { estado: 'MANTENIMIENTO' } }),
-        prisma.dispositivo.count({ where: { estado: 'FUERA_DE_SERVICIO' } }),
+        prisma.dispositivo.count({ where: { estado: 'EN_MANTENIMIENTO' } }),
+        prisma.dispositivo.count({ where: { estado: 'EN_CARGA' } }),
       ]);
       
       res.json({
@@ -307,8 +300,8 @@ class DispositivosController {
         porEstado: {
           disponibles: stats[3],
           enUso: stats[4],
-          mantenimiento: stats[5],
-          fueraDeServicio: stats[6]
+          enMantenimiento: stats[5],
+          enCarga: stats[6]
         }
       });
     } catch (error) {
@@ -346,7 +339,7 @@ class DispositivosController {
         include: {
           reservas: {
             where: {
-              estado: { in: ['PENDIENTE', 'ACTIVA'] }
+              fechaRegreso: { gte: new Date() }
             }
           }
         }

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,226 +7,80 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Modelo para tipos de dispositivos (Robot/Drone)
+model Dispositivo {
+  id              String     @id @default(uuid())
+  nombre          String
+  tipo            TipoDispositivo
+  identificador   String     @unique
+  ubicacion       String
+  nivelBateria    Int        @default(100)
+  estado          EstadoDispositivo @default(DISPONIBLE)
+  
+  reservas        Reserva[]
+  metricas        Metrica[]
+  
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@map("dispositivos")
+}
+
+model Reserva {
+  id                String    @id @default(uuid())
+  dispositivoId     String
+  dispositivo       Dispositivo @relation(fields: [dispositivoId], references: [id], onDelete: Cascade)
+  
+  fechaSalida       DateTime
+  horaSalida        String
+  fechaRegreso      DateTime
+  horaRegreso       String
+  
+  solicitadoPor     String
+  tipoServicio      TipoServicio
+  ubicacionOrigen   String?
+  ubicacionDestino  String?
+  observaciones     String?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@map("reservas")
+}
+
+model Metrica {
+  id                String      @id @default(uuid())
+  dispositivoId     String
+  dispositivo       Dispositivo @relation(fields: [dispositivoId], references: [id], onDelete: Cascade)
+  
+  temperatura       Float?
+  humedad           Float?
+  velocidad         Float?
+  altitud           Float?
+  
+  tiempoVuelo       Int
+  horasTotales      Float       @default(0)
+  distanciaTotal    Float       @default(0)
+  
+  fecha             DateTime    @default(now())
+  
+  @@map("metricas")
+}
+
 enum TipoDispositivo {
   ROBOT
   DRONE
 }
 
-// Estados posibles de los dispositivos
 enum EstadoDispositivo {
   DISPONIBLE
   EN_USO
-  MANTENIMIENTO
-  FUERA_DE_SERVICIO
+  EN_MANTENIMIENTO
+  EN_CARGA
 }
 
-// Estados de las reservas
-enum EstadoReserva {
-  PENDIENTE
-  ACTIVA
-  COMPLETADA
-  CANCELADA
-}
-
-// Tipos de servicio
 enum TipoServicio {
   TRANSPORTE_INTERNO
-  GRABACION_AUDIOVISUAL
+  GRABACION_EVENTO
   MONITOREO
-  MANTENIMIENTO
-}
-
-// Modelo principal de dispositivos (robots y drones)
-model Dispositivo {
-  id                String            @id @default(cuid())
-  nombre            String            @unique
-  tipo              TipoDispositivo
-  modelo            String
-  numeroSerie       String            @unique
-  estado            EstadoDispositivo @default(DISPONIBLE)
-  ubicacionActual   String?
-  nivelBateria      Int?              // Porcentaje de batería (0-100)
-  
-  // Especificaciones técnicas
-  pesoMaximoCarga   Float?            // En kilogramos
-  autonomiaMaxima   Int?              // En minutos
-  velocidadMaxima   Float?            // En km/h
-  alturaMaxima      Float?            // En metros (para drones)
-  
-  // Metadatos
-  fechaAdquisicion  DateTime          @default(now())
-  fechaUltimoManten DateTime?
-  horasVuelo        Int               @default(0) // Para drones
-  kilometrosRecorr  Float             @default(0) // Para robots
-  
-  // Relaciones
-  reservas          Reserva[]
-  bitacoras         Bitacora[]
-  estadosMonitoreo  EstadoMonitoreo[]
-  videosAlmacenados VideoAlmacenado[]
-  
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-
-  @@map("dispositivos")
-}
-
-// Modelo para gestión de reservas
-model Reserva {
-  id              String        @id @default(cuid())
-  dispositivoId   String
-  dispositivo     Dispositivo   @relation(fields: [dispositivoId], references: [id], onDelete: Cascade)
-  
-  // Detalles de la reserva
-  fechaInicio     DateTime
-  fechaFin        DateTime
-  tipoServicio    TipoServicio
-  descripcion     String?
-  ubicacionOrigen String
-  ubicacionDestino String?
-  
-  // Usuario/Responsable
-  solicitadoPor   String        // Nombre del solicitante
-  contacto        String        // Email o teléfono
-  
-  estado          EstadoReserva @default(PENDIENTE)
-  observaciones   String?
-  
-  // Relación con bitácora
-  bitacora        Bitacora?
-  
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-
-  @@map("reservas")
-}
-
-// Modelo de bitácoras de uso
-model Bitacora {
-  id              String      @id @default(cuid())
-  reservaId       String      @unique
-  reserva         Reserva     @relation(fields: [reservaId], references: [id], onDelete: Cascade)
-  
-  dispositivoId   String
-  dispositivo     Dispositivo @relation(fields: [dispositivoId], references: [id], onDelete: Cascade)
-  
-  // Tiempos de servicio
-  horaSalida      DateTime?
-  horaRegreso     DateTime?
-  duracionTotal   Int?        // En minutos
-  
-  // Detalles del servicio
-  servicioPrestado TipoServicio
-  rutaRecorrida   String?
-  distanciaRecorr Float?      // En kilómetros
-  
-  // Estado del dispositivo durante el servicio
-  batteryInicio   Int?        // Nivel de batería al inicio
-  batteryFin      Int?        // Nivel de batería al final
-  
-  // Incidencias y observaciones
-  incidencias     String?
-  observaciones   String?
-  
-  // Consumo de energía y recursos
-  energiaConsumida Float?     // En kWh
-  
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-
-  @@map("bitacoras")
-}
-
-// Modelo para monitoreo en tiempo real (simulado)
-model EstadoMonitoreo {
-  id              String      @id @default(cuid())
-  dispositivoId   String
-  dispositivo     Dispositivo @relation(fields: [dispositivoId], references: [id], onDelete: Cascade)
-  
-  // Ubicación GPS
-  latitud         Float
-  longitud        Float
-  altitud         Float?      // Para drones
-  
-  // Estado del dispositivo
-  nivelBateria    Int         // 0-100
-  velocidadActual Float       // km/h
-  temperatura     Float?      // Celsius
-  
-  // Sensores
-  sensorOK        Boolean     @default(true)
-  camaraOK        Boolean     @default(true)
-  gpsOK           Boolean     @default(true)
-  
-  // Conectividad
-  senalWiFi       Int?        // Calidad señal 0-100
-  senal4G         Int?        // Calidad señal 0-100
-  
-  // Estado operacional
-  enMovimiento    Boolean     @default(false)
-  modoAutonomo    Boolean     @default(false)
-  
-  timestamp       DateTime    @default(now())
-
-  @@map("estados_monitoreo")
-}
-
-// Modelo para almacenamiento de videos en la nube (simulado)
-model VideoAlmacenado {
-  id              String      @id @default(cuid())
-  dispositivoId   String
-  dispositivo     Dispositivo @relation(fields: [dispositivoId], references: [id], onDelete: Cascade)
-  
-  // Información del video
-  nombreArchivo   String
-  duracion        Int         // En segundos
-  tamano          Float       // En MB
-  resolucion      String      // ej: "1920x1080"
-  formato         String      // ej: "mp4", "avi"
-  
-  // Ubicación y contexto
-  fechaGrabacion  DateTime
-  ubicacionGrab   String
-  tipoGrabacion   String      // ej: "Recorrido", "Monitoreo", "Evento"
-  
-  // Almacenamiento en la nube (simulado)
-  urlAlmacenamiento String?   // URL simulada del archivo
-  cloudProvider   String?     // ej: "AWS S3", "Google Cloud"
-  bucketName      String?     // Nombre del bucket
-  
-  // Metadatos
-  descripcion     String?
-  etiquetas       String[]    // Array de etiquetas para búsqueda
-  publico         Boolean     @default(false)
-  
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-
-  @@map("videos_almacenados")
-}
-
-// Modelo para configuración del sistema
-model ConfiguracionSistema {
-  id                    String   @id @default(cuid())
-  nombreSistema         String   @default("Sistema de Gestión de Robots y Drones")
-  version               String   @default("1.0.0")
-  
-  // Configuraciones operacionales
-  maxReservasSimultaneas Int     @default(10)
-  tiempoMaximoReserva   Int      @default(480) // En minutos (8 horas)
-  alertaBateriaMinima   Int      @default(20)  // Porcentaje
-  
-  // Configuraciones de monitoreo
-  intervalMonitoreo     Int      @default(30)  // En segundos
-  tiempoRetencionDatos  Int      @default(365) // En días
-  
-  // Configuraciones de notificaciones
-  emailNotificaciones   Boolean  @default(true)
-  smsNotificaciones     Boolean  @default(false)
-  
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-
-  @@map("configuracion_sistema")
+  ENTREGA
 }

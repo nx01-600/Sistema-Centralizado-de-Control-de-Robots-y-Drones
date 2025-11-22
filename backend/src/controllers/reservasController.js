@@ -9,10 +9,9 @@ class ReservasController {
   // GET /api/reservas - Obtener todas las reservas
   async getAllReservas(req, res, next) {
     try {
-      const { estado, dispositivoId, page = 1, limit = 10 } = req.query;
+      const { dispositivoId, page = 1, limit = 10 } = req.query;
       
       const whereClause = {};
-      if (estado) whereClause.estado = estado;
       if (dispositivoId) whereClause.dispositivoId = dispositivoId;
       
       const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -30,8 +29,7 @@ class ReservasController {
                 tipo: true,
                 estado: true
               }
-            },
-            bitacora: true
+            }
           },
           orderBy: { createdAt: 'desc' }
         }),
@@ -60,8 +58,7 @@ class ReservasController {
       const reserva = await prisma.reserva.findUnique({
         where: { id },
         include: {
-          dispositivo: true,
-          bitacora: true
+          dispositivo: true
         }
       });
       
@@ -105,8 +102,8 @@ class ReservasController {
       // Verificar conflictos de horario
       const conflictos = await this._checkConflictos(
         reservaData.dispositivoId,
-        reservaData.fechaInicio,
-        reservaData.fechaFin
+        reservaData.fechaSalida,
+        reservaData.fechaRegreso
       );
       
       if (conflictos.length > 0) {
@@ -150,8 +147,7 @@ class ReservasController {
         where: { id },
         data: updateData,
         include: {
-          dispositivo: true,
-          bitacora: true
+          dispositivo: true
         }
       });
       
@@ -164,63 +160,17 @@ class ReservasController {
     }
   }
   
-  // DELETE /api/reservas/:id - Cancelar reserva
+  // DELETE /api/reservas/:id - Eliminar reserva
   async cancelReserva(req, res, next) {
     try {
       const { id } = req.params;
       
-      const reserva = await prisma.reserva.findUnique({
+      await prisma.reserva.delete({
         where: { id }
       });
       
-      if (!reserva) {
-        return res.status(404).json({
-          error: 'Reserva no encontrada'
-        });
-      }
-      
-      if (reserva.estado === 'COMPLETADA') {
-        return res.status(400).json({
-          error: 'No se puede cancelar',
-          message: 'La reserva ya está completada'
-        });
-      }
-      
-      await prisma.reserva.update({
-        where: { id },
-        data: { estado: 'CANCELADA' }
-      });
-      
       res.json({
-        message: 'Reserva cancelada exitosamente'
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-  
-  // PATCH /api/reservas/:id/estado - Cambiar estado
-  async changeEstado(req, res, next) {
-    try {
-      const { id } = req.params;
-      const { estado } = req.body;
-      
-      const reserva = await prisma.reserva.update({
-        where: { id },
-        data: { estado },
-        include: {
-          dispositivo: {
-            select: {
-              id: true,
-              nombre: true
-            }
-          }
-        }
-      });
-      
-      res.json({
-        message: `Estado cambiado a ${estado}`,
-        reserva
+        message: 'Reserva eliminada exitosamente'
       });
     } catch (error) {
       next(error);
@@ -234,10 +184,7 @@ class ReservasController {
       
       const reservas = await prisma.reserva.findMany({
         where: { dispositivoId },
-        include: {
-          bitacora: true
-        },
-        orderBy: { fechaInicio: 'desc' }
+        orderBy: { fechaSalida: 'desc' }
       });
       
       res.json(reservas);
@@ -251,29 +198,19 @@ class ReservasController {
     try {
       const stats = await Promise.all([
         prisma.reserva.count(),
-        prisma.reserva.count({ where: { estado: 'PENDIENTE' } }),
-        prisma.reserva.count({ where: { estado: 'ACTIVA' } }),
-        prisma.reserva.count({ where: { estado: 'COMPLETADA' } }),
-        prisma.reserva.count({ where: { estado: 'CANCELADA' } }),
         prisma.reserva.count({ where: { tipoServicio: 'TRANSPORTE_INTERNO' } }),
-        prisma.reserva.count({ where: { tipoServicio: 'GRABACION_AUDIOVISUAL' } }),
+        prisma.reserva.count({ where: { tipoServicio: 'GRABACION_EVENTO' } }),
         prisma.reserva.count({ where: { tipoServicio: 'MONITOREO' } }),
-        prisma.reserva.count({ where: { tipoServicio: 'MANTENIMIENTO' } })
+        prisma.reserva.count({ where: { tipoServicio: 'ENTREGA' } })
       ]);
       
       res.json({
         total: stats[0],
-        porEstado: {
-          pendientes: stats[1],
-          activas: stats[2],
-          completadas: stats[3],
-          canceladas: stats[4]
-        },
         porTipoServicio: {
-          transporteInterno: stats[5],
-          grabacionAudiovisual: stats[6],
-          monitoreo: stats[7],
-          mantenimiento: stats[8]
+          transporteInterno: stats[1],
+          grabacionEvento: stats[2],
+          monitoreo: stats[3],
+          entrega: stats[4]
         }
       });
     } catch (error) {
@@ -281,44 +218,26 @@ class ReservasController {
     }
   }
   
-  // GET /api/reservas/conflictos/:dispositivoId - Verificar conflictos
-  async checkConflictos(req, res, next) {
-    try {
-      const { dispositivoId } = req.params;
-      const { fechaInicio, fechaFin } = req.query;
-      
-      const conflictos = await this._checkConflictos(dispositivoId, fechaInicio, fechaFin);
-      
-      res.json({
-        hayConflictos: conflictos.length > 0,
-        conflictos
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
-  
-  // Método auxiliar para verificar conflictos
-  async _checkConflictos(dispositivoId, fechaInicio, fechaFin) {
+  // Método auxiliar para verificar conflictos (simplificado)
+  async _checkConflictos(dispositivoId, fechaSalida, fechaRegreso) {
     return await prisma.reserva.findMany({
       where: {
         dispositivoId,
-        estado: { in: ['PENDIENTE', 'ACTIVA'] },
         OR: [
           {
-            fechaInicio: {
-              lt: new Date(fechaFin)
+            fechaSalida: {
+              lt: new Date(fechaRegreso)
             },
-            fechaFin: {
-              gt: new Date(fechaInicio)
+            fechaRegreso: {
+              gt: new Date(fechaSalida)
             }
           }
         ]
       },
       select: {
         id: true,
-        fechaInicio: true,
-        fechaFin: true,
+        fechaSalida: true,
+        fechaRegreso: true,
         tipoServicio: true,
         solicitadoPor: true
       }
