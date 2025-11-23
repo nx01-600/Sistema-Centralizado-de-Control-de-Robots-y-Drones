@@ -95,6 +95,7 @@ export default function HomePage() {
 
   // Formulario reserva
   const [reservaForm, setReservaForm] = useState({
+    id: '' as string | undefined,
     dispositivoId: '',
     fechaSalida: '',
     horaSalida: '',
@@ -343,19 +344,33 @@ export default function HomePage() {
 
   const crearReserva = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/reservas`, {
-        method: 'POST',
+      const isEditing = !!reservaForm.id;
+      const url = isEditing 
+        ? `${API_URL}/api/reservas/${reservaForm.id}` 
+        : `${API_URL}/api/reservas`;
+      const method = isEditing ? 'PUT' : 'POST';
+      
+      const { id, ...dataToSend } = reservaForm;
+      
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reservaForm)
+        body: JSON.stringify(dataToSend)
       });
       
       if (res.ok) {
-        mostrarNotificacion('Reserva registrada exitosamente', 'success');
+        mostrarNotificacion(
+          isEditing ? 'Reserva actualizada exitosamente' : 'Reserva registrada exitosamente', 
+          'success'
+        );
         setShowReservaForm(false);
         resetReservaForm();
         actualizarDatos();
       } else {
-        mostrarNotificacion('Error al registrar reserva', 'error');
+        mostrarNotificacion(
+          isEditing ? 'Error al actualizar reserva' : 'Error al registrar reserva', 
+          'error'
+        );
       }
     } catch (error) {
       console.error('Error:', error);
@@ -390,6 +405,7 @@ export default function HomePage() {
 
   const resetReservaForm = () => {
     setReservaForm({
+      id: undefined,
       dispositivoId: '',
       fechaSalida: '',
       horaSalida: '',
@@ -863,7 +879,7 @@ export default function HomePage() {
               marginBottom: '20px',
               border: '2px solid var(--color-azul-primario)'
             }}>
-              <h4>Registrar Nueva Reserva</h4>
+              <h4>{reservaForm.id ? 'Editar Reserva' : 'Registrar Nueva Reserva'}</h4>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginTop: '15px' }}>
                 <div>
                   <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Dispositivo:</label>
@@ -943,7 +959,7 @@ export default function HomePage() {
                   onClick={crearReserva}
                   style={{ padding: '10px 20px', backgroundColor: 'var(--color-azul-primario)', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
                 >
-                  Registrar Reserva
+                  {reservaForm.id ? 'Actualizar Reserva' : 'Registrar Reserva'}
                 </button>
                 <button 
                   onClick={() => {
@@ -991,6 +1007,37 @@ export default function HomePage() {
                       <td>{reserva.tipoServicio}</td>
                       <td>
                         <div className="actions-container">
+                          <button 
+                            onClick={() => {
+                              setReservaForm({
+                                id: reserva.id,
+                                dispositivoId: reserva.dispositivoId,
+                                fechaSalida: reserva.fechaSalida.split('T')[0],
+                                horaSalida: reserva.horaSalida,
+                                fechaRegreso: reserva.fechaRegreso.split('T')[0],
+                                horaRegreso: reserva.horaRegreso,
+                                solicitadoPor: reserva.solicitadoPor,
+                                tipoServicio: reserva.tipoServicio
+                              });
+                              setShowReservaForm(true);
+                            }}
+                            style={{ 
+                              padding: '6px 14px', 
+                              backgroundColor: '#ffc107', 
+                              color: '#000', 
+                              border: 'none', 
+                              borderRadius: '5px', 
+                              cursor: 'pointer',
+                              fontSize: '13px',
+                              fontWeight: '500',
+                              transition: 'all 0.2s',
+                              marginRight: '8px'
+                            }}
+                            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e0a800'}
+                            onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ffc107'}
+                          >
+                            Editar
+                          </button>
                           <button 
                             onClick={() => eliminarReserva(reserva.id)}
                             style={{ 
